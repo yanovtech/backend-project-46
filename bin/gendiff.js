@@ -1,4 +1,6 @@
 import { Command } from 'commander';
+import { readFileSync } from 'node:fs';
+import json from '../src/parse.js';
 
 const program = new Command();
 
@@ -10,3 +12,9 @@ program
   .argument('<filepath2>');
 
 program.parse();
+
+const filepath1 = program.args[0];
+// const filepath2 = program.args[1];
+// const option = program.opts().format;
+
+console.log(json(readFileSync(filepath1)));

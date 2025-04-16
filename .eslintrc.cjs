@@ -10,4 +10,8 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: 'module',
   },
+  rules: {
+    'no-console': 'off',
+    'import/extensions': ['error', 'ignorePackages', { js: 'always' }],
+  },
 };
