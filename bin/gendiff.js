@@ -8,14 +8,9 @@ program
   .version('1.0.0')
   .option('-f, --format [type]', 'output format')
   .argument('<filepath1>')
-  .argument('<filepath2>');
+  .argument('<filepath2>')
+  .action((filepath1, filepath2, options) => {
+    console.log(makeDiff(filepath1, filepath2, options.format));
+  });
 
 program.parse();
-
-const filepath1 = program.args[0];
-const filepath2 = program.args[1];
-const option = program.opts().format ?? 'default';
-
-const result = makeDiff(option, filepath1, filepath2);
-
-console.log(result);
