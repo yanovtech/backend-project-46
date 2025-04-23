@@ -1,6 +1,5 @@
 import { Command } from 'commander';
-import { readFileSync } from 'node:fs';
-import json from '../src/parse.js';
+import makeDiff from '../src/makeDiff.js';
 
 const program = new Command();
 
@@ -14,7 +13,9 @@ program
 program.parse();
 
 const filepath1 = program.args[0];
-// const filepath2 = program.args[1];
-// const option = program.opts().format;
+const filepath2 = program.args[1];
+const option = program.opts().format ?? 'default';
 
-console.log(json(readFileSync(filepath1)));
+const result = makeDiff(option, filepath1, filepath2);
+
+console.log(result);
