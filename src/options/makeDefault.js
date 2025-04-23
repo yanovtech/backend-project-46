@@ -23,7 +23,7 @@ export default (obj) => {
       if (_.has(val, 'newValue') && _.has(val, 'oldValue')) {
         return [
           `${indent}${OLD_VALUE_PREFIX}${key}: ${iter(val.oldValue, depth + 1)}`,
-          `${indent}${NEW_VALUE_PREFIX}${key}: ${iter(val.newValue, depth + 1)}`
+          `${indent}${NEW_VALUE_PREFIX}${key}: ${iter(val.newValue, depth + 1)}`,
         ];
       }
 

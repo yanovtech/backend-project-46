@@ -1,16 +1,7 @@
 import _ from 'lodash';
 import readFile from './readFile.js';
-import jsonParse from './parse.js';
+import { jsonParse, yamlParse } from './parse.js';
 import makeDefault from './options/makeDefault.js';
-
-export default (firstFilePath, secondFilePath) => {
-  const firstObj = jsonParse(readFile(firstFilePath));
-  const secondObj = jsonParse(readFile(secondFilePath));
-
-  const combinedObj = addingObjects(firstObj, secondObj);
-  
-  return makeDefault(combinedObj);
-};
 
 const addingObjects = (firstObj, secondObj) => {
   const allKeys = _.union(Object.keys(firstObj), Object.keys(secondObj)).sort();
@@ -40,4 +31,14 @@ const addingObjects = (firstObj, secondObj) => {
 
     return acc;
   }, {});
+};
+
+export default (firstFilePath, secondFilePath) => {
+  const firstFile = readFile(firstFilePath);
+  const firstObj = firstFilePath.split('.')[1] === 'json' ? jsonParse(firstFile) : yamlParse(firstFile);
+  const secondFile = readFile(secondFilePath);
+  const secondObj = secondFilePath.split('.')[1] === 'json' ? jsonParse(secondFile) : yamlParse(secondFile);
+
+  const combinedObj = addingObjects(firstObj, secondObj);
+  return makeDefault(combinedObj);
 };
