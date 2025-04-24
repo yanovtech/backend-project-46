@@ -35,7 +35,7 @@ const addingObjects = (firstObj, secondObj) => {
   }, {});
 };
 
-export default (firstFilePath, secondFilePath, option) => {
+export default (firstFilePath, secondFilePath, option = 'stylish') => {
   const firstFile = readFile(firstFilePath);
   const firstObj = firstFilePath.split('.')[1] === 'json' ? jsonParse(firstFile) : yamlParse(firstFile);
   const secondFile = readFile(secondFilePath);
