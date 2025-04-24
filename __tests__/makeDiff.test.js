@@ -11,7 +11,7 @@ let expectedResults;
 
 beforeEach(() => {
   expectedResults = {
-    default: readFile(getFixturePath('defaultResult.txt')),
+    stylish: readFile(getFixturePath('stylishResult.txt')),
     plain: readFile(getFixturePath('plainResult.txt')),
     json: readFile(getFixturePath('jsonResult.txt')),
   };
@@ -24,7 +24,7 @@ const filePairs = [
   ['file1.yaml', 'file2.json'],
 ];
 
-const formats = ['default', 'plain', 'json'];
+const formats = ['stylish', 'plain', 'json'];
 
 formats.forEach((format) => {
   describe(`makeDiff with format "${format}"`, () => {

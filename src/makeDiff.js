@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import readFile from './readFile.js';
 import { jsonParse, yamlParse } from './parse.js';
-import makeDefault from './options/makeDefault.js';
+import makeDefault from './options/makeStylish.js';
 import makePlain from './options/makePlain.js';
 import makeJson from './options/makeJson.js';
 
