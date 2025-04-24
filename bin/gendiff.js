@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
-import makeDiff from '../src/index.js';
+import gendiff from '../src/index.js';
 
 const buildProgram = () => {
   const program = new Command();
@@ -13,7 +13,7 @@ const buildProgram = () => {
     .arguments('<filepath1> <filepath2>')
     .action((filepath1, filepath2) => {
       const opts = program.opts();
-      console.log(makeDiff(filepath1, filepath2, opts.format));
+      console.log(gendiff(filepath1, filepath2, opts.format));
     });
 
   return program;
