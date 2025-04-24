@@ -7,23 +7,32 @@ const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 const getFixturePath = (name) => path.join(dirname, '..', '__fixtures__', name);
 
-let expectedResult;
+let expectedResults;
 
 beforeEach(() => {
-  expectedResult = readFile(getFixturePath('defaultResult.txt'));
+  expectedResults = {
+    default: readFile(getFixturePath('defaultResult.txt')),
+    plain: readFile(getFixturePath('plainResult.txt')),
+    // json: readFile(getFixturePath('jsonResult.txt')),
+  };
 });
 
-const testCases = [
-  ['YAML vs YAML', 'file1.yaml', 'file2.yml'],
-  ['JSON vs JSON', 'file1.json', 'file2.json'],
-  ['JSON vs YAML', 'file1.json', 'file2.yml'],
-  ['YAML vs JSON', 'file1.yaml', 'file2.json'],
+const filePairs = [
+  ['file1.json', 'file2.json'],
+  ['file1.yaml', 'file2.yml'],
+  ['file1.json', 'file2.yml'],
+  ['file1.yaml', 'file2.json'],
 ];
 
-testCases.forEach(([description, file1, file2]) => {
-  test(`makeDiff works correctly for ${description}`, () => {
-    const filePath1 = getFixturePath(file1);
-    const filePath2 = getFixturePath(file2);
-    expect(makeDiff(filePath1, filePath2)).toBe(expectedResult);
+const formats = ['default', 'plain'];
+
+formats.forEach((format) => {
+  describe(`makeDiff with format "${format}"`, () => {
+    test.each(filePairs)('%s vs %s', (file1, file2) => {
+      const filePath1 = getFixturePath(file1);
+      const filePath2 = getFixturePath(file2);
+      const result = makeDiff(filePath1, filePath2, format);
+      expect(result).toBe(expectedResults[format]);
+    });
   });
 });
