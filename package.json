@@ -1,6 +1,9 @@
 {
   "name": "@hexlet/code",
   "type": "module",
+  "bin": {
+    "gendiff": "bin/gendiff.js"
+  },
   "version": "1.0.0",
   "description": "[![Actions Status](https://github.com/yanovtech/backend-project-46/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/yanovtech/backend-project-46/actions)",
   "main": "bin/gendiff.js",
