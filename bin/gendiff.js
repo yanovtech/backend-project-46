@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
-import makeDiff from '../src/makeDiff.js';
+import makeDiff from '../src/index.js';
 
 const buildProgram = () => {
   const program = new Command();
