@@ -1,6 +1,6 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
-import makeDiff from '../src/makeDiff.js';
+import makeDiff from '../src/index.js';
 import readFile from '../src/readFile.js';
 
 const filename = fileURLToPath(import.meta.url);
