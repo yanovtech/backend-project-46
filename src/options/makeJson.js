@@ -1,1 +1,1 @@
-export default () => null;
+export default (obj) => JSON.stringify(obj, null, 2);
