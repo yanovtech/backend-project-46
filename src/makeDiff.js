@@ -36,7 +36,7 @@ const addingObjects = (firstObj, secondObj) => {
 };
 
 export default (firstFilePath, secondFilePath, option) => {
-  const optionType = option ?? 'default';
+  const optionType = option ?? 'stylish';
   const firstFile = readFile(firstFilePath);
   const firstObj = firstFilePath.split('.')[1] === 'json' ? jsonParse(firstFile) : yamlParse(firstFile);
   const secondFile = readFile(secondFilePath);
@@ -44,7 +44,7 @@ export default (firstFilePath, secondFilePath, option) => {
 
   const combinedObj = addingObjects(firstObj, secondObj);
   const options = {
-    default: makeDefault(combinedObj),
+    stylish: makeDefault(combinedObj),
     plain: makePlain(combinedObj),
     json: makeJson(combinedObj),
   };
