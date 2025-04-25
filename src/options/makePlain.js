@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-const formatValue = value => {
+const formatValue = (value) => {
   if (_.isPlainObject(value)) {
     return '[complex value]'
   }
@@ -10,7 +10,7 @@ const formatValue = value => {
   return String(value)
 }
 
-export default obj => {
+export default (obj) => {
   const iter = (currentValue, parent = '') => {
     const result = Object.entries(currentValue).flatMap(([key, value]) => {
       const propertyPath = parent ? `${parent}.${key}` : key

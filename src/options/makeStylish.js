@@ -6,7 +6,7 @@ const OLD_VALUE_PREFIX = '- '
 
 const getIndent = depth => ' '.repeat(depth * INDENT_SIZE)
 
-export default obj => {
+export default (obj) => {
   const iter = (currentValue, depth = 1) => {
     if (!_.isPlainObject(currentValue)) {
       return String(currentValue)

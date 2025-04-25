@@ -26,7 +26,7 @@ const filePairs = [
 
 const formats = ['stylish', 'plain', 'json']
 
-formats.forEach(format => {
+formats.forEach(format =>
   describe(`makeDiff with format "${format}"`, () => {
     test.each(filePairs)('%s vs %s', (file1, file2) => {
       const filePath1 = getFixturePath(file1)
@@ -35,4 +35,4 @@ formats.forEach(format => {
       expect(result).toBe(expectedResults[format])
     })
   })
-})
+)
