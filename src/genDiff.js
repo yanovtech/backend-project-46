@@ -20,17 +20,17 @@ const addingObjects = (firstObj, secondObj) => {
 
       if (bothAreObjects) {
         acc[key] = { newOldValue: addingObjects(val1, val2) }
-      } 
+      }
       else if (_.isEqual(val1, val2)) {
         acc[key] = { newOldValue: val1 }
-      } 
+      }
       else {
         acc[key] = { oldValue: val1, newValue: val2 }
       }
-    } 
+    }
     else if (hasFirst) {
       acc[key] = { oldValue: val1 }
-    } 
+    }
     else {
       acc[key] = { newValue: val2 }
     }

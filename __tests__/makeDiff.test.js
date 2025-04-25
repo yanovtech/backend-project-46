@@ -34,5 +34,5 @@ formats.forEach(format =>
       const result = makeDiff(filePath1, filePath2, format)
       expect(result).toBe(expectedResults[format])
     })
-  })
+  }),
 )
