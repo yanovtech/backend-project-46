@@ -1,16 +1,20 @@
-import js from '@eslint/js';
-import stylistic from '@stylistic/eslint-plugin';
+import eslintPluginStylistic from '@stylistic/eslint-plugin'
 
 export default [
-  js.configs.recommended,
   {
+    files: ['**/*.js'],
+    languageOptions: {
+      ecmaVersion: 2022,
+      sourceType: 'module',
+    },
     plugins: {
-      stylistic,
+      '@stylistic': eslintPluginStylistic,
     },
     rules: {
-      'stylistic/indent': ['error', 2],
-      'stylistic/semi': ['error', 'always'],
-      'no-console': 'off',
+      '@stylistic/semi': ['error', 'never'],
+      '@stylistic/brace-style': ['error', '1tbs', { allowSingleLine: false }],
+      '@stylistic/arrow-parens': ['error', 'as-needed'],
     },
   },
-];
+]
+
