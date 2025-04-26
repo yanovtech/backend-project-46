@@ -1,44 +1,39 @@
 import _ from 'lodash'
 
-const formatValue = (value) => {
+const stringify = (value) => {
   if (_.isPlainObject(value)) {
     return '[complex value]'
   }
   if (typeof value === 'string') {
     return `'${value}'`
   }
+  if (value === null) {
+    return 'null'
+  }
   return String(value)
 }
 
-export default (obj) => {
-  const iter = (currentValue, parent = '') => {
-    const result = Object.entries(currentValue).flatMap(([key, value]) => {
-      const propertyPath = parent ? `${parent}.${key}` : key
+const formatPlain = (tree, path = []) => {
+  const lines = tree.flatMap((node) => {
+    const fullPath = [...path, node.key].join('.')
 
-      if (_.has(value, 'newOldValue')) {
-        const nested = value.newOldValue
-        return _.isPlainObject(nested) ? iter(nested, propertyPath) : []
-      }
+    switch (node.status) {
+      case 'added':
+        return `Property '${fullPath}' was added with value: ${stringify(node.value)}`
+      case 'deleted':
+        return `Property '${fullPath}' was removed`
+      case 'combined':
+        return `Property '${fullPath}' was updated. From ${stringify(node.oldValue)} to ${stringify(node.newValue)}`
+      case 'nested':
+        return formatPlain(node.children, [...path, node.key])
+      case 'unchanged':
+        return []
+      default:
+        throw new Error(`Unknown status: ${node.status}`)
+    }
+  })
 
-      if (_.has(value, 'oldValue') && _.has(value, 'newValue')) {
-        return [
-          `Property '${propertyPath}' was updated. From ${formatValue(value.oldValue)} to ${formatValue(value.newValue)}`,
-        ]
-      }
-
-      if (_.has(value, 'oldValue')) {
-        return [`Property '${propertyPath}' was removed`]
-      }
-
-      if (_.has(value, 'newValue')) {
-        return [`Property '${propertyPath}' was added with value: ${formatValue(value.newValue)}`]
-      }
-
-      return []
-    })
-
-    return result
-  }
-
-  return iter(obj).join('\n')
+  return lines.join('\n')
 }
+
+export default formatPlain

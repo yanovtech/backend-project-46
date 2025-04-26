@@ -4,42 +4,43 @@ const INDENT_SIZE = 4
 const NEW_VALUE_PREFIX = '+ '
 const OLD_VALUE_PREFIX = '- '
 
-const getIndent = depth => ' '.repeat(depth * INDENT_SIZE)
+const getIndent = depth => ' '.repeat(depth * INDENT_SIZE - 2)
+const getBracketIndent = depth => ' '.repeat((depth - 1) * INDENT_SIZE)
 
-export default (obj) => {
-  const iter = (currentValue, depth = 1) => {
-    if (!_.isPlainObject(currentValue)) {
-      return String(currentValue)
-    }
-
-    const indent = ' '.repeat(depth * INDENT_SIZE - 2)
-    const bracketIndent = getIndent(depth - 1)
-
-    const lines = Object.entries(currentValue).flatMap(([key, val]) => {
-      if (_.has(val, 'newOldValue')) {
-        return `${indent}  ${key}: ${iter(val.newOldValue, depth + 1)}`
-      }
-
-      if (_.has(val, 'newValue') && _.has(val, 'oldValue')) {
-        return [
-          `${indent}${OLD_VALUE_PREFIX}${key}: ${iter(val.oldValue, depth + 1)}`,
-          `${indent}${NEW_VALUE_PREFIX}${key}: ${iter(val.newValue, depth + 1)}`,
-        ]
-      }
-
-      if (_.has(val, 'newValue')) {
-        return `${indent}${NEW_VALUE_PREFIX}${key}: ${iter(val.newValue, depth + 1)}`
-      }
-
-      if (_.has(val, 'oldValue')) {
-        return `${indent}${OLD_VALUE_PREFIX}${key}: ${iter(val.oldValue, depth + 1)}`
-      }
-
-      return `${indent}  ${key}: ${iter(val, depth + 1)}`
-    })
-
-    return ['{', ...lines, `${bracketIndent}}`].join('\n')
+const stringify = (value, depth) => {
+  if (!_.isPlainObject(value)) {
+    return String(value)
   }
 
-  return iter(obj)
+  const lines = Object.entries(value).map(([key, val]) => `${getIndent(depth + 1)}  ${key}: ${stringify(val, depth + 1)}`)
+
+  return ['{', ...lines, `${getBracketIndent(depth + 1)}}`].join('\n')
 }
+
+const formatStylish = (tree, depth = 1) => {
+  const lines = tree.flatMap((node) => {
+    const indent = getIndent(depth)
+
+    switch (node.status) {
+      case 'added':
+        return `${indent}${NEW_VALUE_PREFIX}${node.key}: ${stringify(node.value, depth)}`
+      case 'deleted':
+        return `${indent}${OLD_VALUE_PREFIX}${node.key}: ${stringify(node.value, depth)}`
+      case 'combined':
+        return [
+          `${indent}${OLD_VALUE_PREFIX}${node.key}: ${stringify(node.oldValue, depth)}`,
+          `${indent}${NEW_VALUE_PREFIX}${node.key}: ${stringify(node.newValue, depth)}`,
+        ]
+      case 'nested':
+        return `${indent}  ${node.key}: ${formatStylish(node.children, depth + 1)}`
+      case 'unchanged':
+        return `${indent}  ${node.key}: ${stringify(node.value, depth)}`
+      default:
+        throw new Error(`Unknown status: ${node.status}`)
+    }
+  })
+
+  return ['{', ...lines, `${getBracketIndent(depth)}}`].join('\n')
+}
+
+export default formatStylish
